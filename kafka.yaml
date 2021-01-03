@@ -82,7 +82,7 @@ spec:
       containers:
       - name: k8s-kafka
         imagePullPolicy: Always
-        image: fastop/kafka:2.2.0
+        image: harbor.demo.io/kubernetes/kubernetes-kafka:2.2.2
         resources:
           requests:
             memory: "600Mi"
@@ -186,7 +186,7 @@ spec:
         - name: KAFKA_OPTS
           value: "-Dlogging.level=INFO"
         volumeMounts:
-        - name: datadir
+        - name: kafka-data
           mountPath: /var/lib/kafka
         readinessProbe:
           tcpSocket:
@@ -198,14 +198,10 @@ spec:
         fsGroup: 1000
   volumeClaimTemplates:
   - metadata:
-      name: datadir
-      #This annotation is still working, however it will become fully deprecated in a future Kubernetes release.just use storageClassName.
-      #  annotations:
-      #      volume.beta.kubernetes.io/storage-class: nfs-storage
-      #      volume.beta.kubernetes.io/storage-provisioner: fuseim.pri/ifs
+      name: kafka-data
     spec:
       accessModes: [ "ReadWriteMany" ]
-      storageClassName: nfs-storage 
+      storageClassName: ceph-rbd-hdd
       resources:
         requests:
-          storage:  300Mi
+          storage: 10Gi

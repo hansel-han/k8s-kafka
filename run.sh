@@ -1,8 +1,8 @@
 #!/bin/bash 
 
 #build image
-tag="2.2.0"
-project="fastop/kafka"
+tag="2.2.2"
+project="harbor.demo.io/kubernetes/kubernetes-kafka"
 
 docker build -t $project:$tag .
 
